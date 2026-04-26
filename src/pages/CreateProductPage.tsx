@@ -24,7 +24,7 @@ export function CreateProductPage() {
   }, [user, navigate]);
 
   if (!user || user.role !== 'admin') {
-    return null; // Don't flash the form while redirecting
+    return null; 
   }
 
   const [form, setForm] = useState({

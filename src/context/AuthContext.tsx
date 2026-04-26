@@ -29,9 +29,13 @@ const CURRENT_USER_KEY = 'currentUser';
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem(CURRENT_USER_KEY); 
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error("Failed to parse user", e);
+      }
     }
     setIsLoading(false);
   }, []);
