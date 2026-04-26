@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
-body {
-    overflow: hidden;
+.hide-scrollbar {
+    scrollbar-width: none;
+    
+    -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
 }
 
 @layer base {
@@ -9,8 +15,7 @@ body {
     --bg: #ffffff;
     --text: #1a1a2e;
   }
-
-  /* Вместо [data-theme="dark"] используем .dark */
+  
   .dark {
     --bg: #1a1a2e;
     --text: #f0f0f0;
