@@ -9,6 +9,8 @@ import { useTheme } from '../context/ThemeContext';
 import { useCart } from '../context/CartContext';
 import { toast } from 'sonner';
 
+
+
 const CartCount: React.FC = () => {
   const { cart } = useCart();
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);

@@ -21,6 +21,10 @@ export function useAuth() {
 }
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+
+  const USERS_KEY = 'users';
+const CURRENT_USER_KEY = 'currentUser';
+
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,53 +36,60 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    if (!email || !password) return false;
+  const login = async (email: string, password: string) => {
+    const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
 
-    let loggedUser: User;
-    
-    if (email === 'admin@forgestore.com' && password === 'admin') {
-      loggedUser = { 
-        id: 1, 
-        email, 
-        username: 'Admin User', 
-        role: 'admin' 
-      };
-    } else if (email.includes('@') && password.length >= 3) {
-      loggedUser = { 
-        id: Date.now(), 
-        email, 
-        username: email.split('@')[0], 
-        role: 'user' 
-      };
-    } else {
-      return false;
-    }
+    const cleanEmail = email.trim().toLowerCase();
 
-    setUser(loggedUser);
-    localStorage.setItem('user', JSON.stringify(loggedUser));
+    const found = users.find(
+      (u: any) => u.email === cleanEmail && u.password === password
+    );
+
+    if (!found) return false;
+
+    const safeUser: User = {
+      id: found.id,
+      email: found.email,
+      username: found.username,
+      role: found.role,
+    };
+
+    setUser(safeUser);
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(safeUser));
+
     return true;
   };
 
-  const register = async (email: string, username: string, password: string): Promise<boolean> => {
-    if (!email || !username || password.length < 4) return false;
-    
+  const register = async (email: string, username: string, password: string) => {
+    const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    const exists = users.find((u: any) => u.email === cleanEmail);
+    if (exists) return false;
+
     const newUser: User = {
       id: Date.now(),
-      email,
+      email: cleanEmail,
       username,
-      role: 'user'
+      role: cleanEmail === 'admin@gmail.com' ? 'admin' : 'user',
     };
-    
+
+    const fullUser = { ...newUser, password };
+
+    users.push(fullUser);
+
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(newUser));
+
     setUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
+
     return true;
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('cart');
+    localStorage.removeItem(CURRENT_USER_KEY);
   };
 
   if (isLoading) return <div className="flex items-center justify-center min-h-screen text-white">Loading...</div>;

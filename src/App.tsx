@@ -20,6 +20,7 @@ import { AdminProductsPage } from './pages/AdminProductsPage';
 import { ProductFormPage } from './pages/ProductFormPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { CreateProductPage } from './pages/CreateProductPage';
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/create" element={<CreateProductPage />} />
               
               <Route path="/profile" element={
                 <ProtectedRoute>

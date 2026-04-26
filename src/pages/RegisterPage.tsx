@@ -37,6 +37,8 @@ export function RegisterPage() {
     setIsLoading(false);
   };
 
+  
+
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-6">
       <div className="max-w-md w-full">
