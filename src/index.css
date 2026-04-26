@@ -1,13 +1,17 @@
 @import "tailwindcss";
 
-.hide-scrollbar {
-    scrollbar-width: none;
-    
-    -ms-overflow-style: none;
+body::-webkit-scrollbar {
+    display: none;
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-    display: none;
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 
 @layer base {
@@ -15,7 +19,7 @@
     --bg: #ffffff;
     --text: #1a1a2e;
   }
-  
+
   .dark {
     --bg: #1a1a2e;
     --text: #f0f0f0;
